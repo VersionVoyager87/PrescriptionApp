@@ -1,0 +1,56 @@
+@model Assignment4.Models.Prescription
+@{
+    string title = ViewBag.Action + " Prescription";
+    ViewData["Title"] = title;
+    var fillStatuses = (string[])ViewBag.FillStatusList;
+}
+
+<div class="card shadow p-4">
+    <h2 class="text-center mb-4">@title</h2>
+
+    <form asp-action="Edit" method="post">
+        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+        <div class="mb-3">
+            <label asp-for="MedicationName" class="form-label"></label>
+            <input asp-for="MedicationName" class="form-control" placeholder="Enter medication name" />
+            <span asp-validation-for="MedicationName" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="FillStatus" class="form-label"></label>
+            <select asp-for="FillStatus" class="form-select">
+                @foreach (var status in fillStatuses)
+                {
+                    <option value="@status" selected="@(status == Model.FillStatus)">
+                        @status
+                    </option>
+                }
+            </select>
+            <span asp-validation-for="FillStatus" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Cost" class="form-label"></label>
+            <input asp-for="Cost" class="form-control" placeholder="Enter cost (e.g. 19.99)" />
+            <span asp-validation-for="Cost" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="RequestTime" class="form-label"></label>
+            <input asp-for="RequestTime" class="form-control" readonly />
+            <span asp-validation-for="RequestTime" class="text-danger"></span>
+        </div>
+
+        <input type="hidden" asp-for="PrescriptionId" />
+
+        <div class="mt-3">
+            <button type="submit" class="btn btn-success me-2">
+                <span class="fas fa-save"></span> Save
+            </button>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">
+                <span class="fas fa-times"></span> Cancel
+            </a>
+        </div>
+    </form>
+</div>

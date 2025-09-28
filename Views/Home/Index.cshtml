@@ -1,0 +1,60 @@
+﻿@model List<Assignment4.Models.Prescription>
+@{
+    ViewData["Title"] = "Prescription List";
+}
+
+<div class="card shadow p-4">
+    <h2 class="text-center mb-4">@ViewData["Title"]</h2>
+
+    <div class="mb-3">
+        <a asp-controller="Prescription" asp-action="Add" class="btn btn-primary">
+            <span class="fas fa-plus"></span> Add New Prescription
+        </a>
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-light">
+            <tr>
+                <th>Medication Name</th>
+                <th>Fill Status</th>
+                <th>Cost</th>
+                <th>Request Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var prescription in Model)
+            {
+                <tr>
+                    <td>@prescription.MedicationName</td>
+                    <td>
+                        @if (prescription.FillStatus == "Filled")
+                        {
+                            <span class="badge bg-success">Filled</span>
+                        }
+                        else if (prescription.FillStatus == "Pending")
+                        {
+                            <span class="badge bg-warning text-dark">Pending</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-primary">New</span>
+                        }
+                    </td>
+                    <td>@prescription.Cost?.ToString("C")</td>
+                    <td>@prescription.RequestTime.ToString("MM/dd/yyyy HH:mm")</td>
+                    <td>
+                        <a asp-controller="Prescription" asp-action="Edit" asp-route-id="@prescription.PrescriptionId"
+                            class="btn btn-sm btn-warning me-2">
+                            <i class="fas fa-pen"></i> Edit
+                        </a>
+                        <a asp-controller="Prescription" asp-action="Delete" asp-route-id="@prescription.PrescriptionId"
+                            class="btn btn-sm btn-danger">
+                            <i class="fas fa-trash"></i> Delete
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
